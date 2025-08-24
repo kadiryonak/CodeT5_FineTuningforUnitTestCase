@@ -15,7 +15,7 @@ class DataPreparer:
         }
 
         if self.features is None:
-            raise ValueError("Hata: features None. Özellikler doğru yüklenmedi.")
+            raise ValueError("Error: features None.")
 
         for dataset_name, features in self.features.items():
             for feature in features:
@@ -42,7 +42,7 @@ class DataPreparer:
                 datasets[dataset_name]['attention_masks'].append(input_encodings['attention_mask'])
                 datasets[dataset_name]['labels'].append(target_encodings['input_ids'])
 
-        # Tensorları birleştir
+
         for dataset_name in datasets:
             datasets[dataset_name]['input_ids'] = torch.cat(datasets[dataset_name]['input_ids'], dim=0).to(self.device)
             datasets[dataset_name]['attention_masks'] = torch.cat(datasets[dataset_name]['attention_masks'], dim=0).to(self.device)
