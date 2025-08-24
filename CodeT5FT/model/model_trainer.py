@@ -33,23 +33,23 @@ class CodeT5Trainer:
         )
 
     def train(self):
-        print("Model eğitilmeye başlandı...")
+        print("The model has begun training...")
         self.trainer.train()
-        print("Model eğitimi tamamlandı.")
+        print("Model training completed.")
         self.model.save_pretrained('./results')
         self.tokenizer.save_pretrained('./results')
 
     def evaluate(self):
-        print("Model değerlendiriliyor...")
+        print("Model is being evaluated...")
         metrics = self.trainer.evaluate()
         for key, value in metrics.items():
             if isinstance(value, torch.Tensor):
                 metrics[key] = value.cpu().numpy()
-        print("Değerlendirme sonuçları:", metrics)
+        print("Evaluation results:", metrics)
         return metrics
 
     def evaluate_test_metrics(self, test_dataset):
-        print("Test verisi üzerinde BLEU ve CodeBLEU hesaplanıyor...")
+        print("BLEU and CodeBLEU are being calculated on the test data...")
         metrics = Metrics.evaluate_code_metrics(test_dataset, self.model, self.tokenizer)
-        print("Test Metrikleri:", metrics)
+        print("Test Metrics:", metrics)
         return metrics
