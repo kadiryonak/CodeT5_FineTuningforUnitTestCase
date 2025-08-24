@@ -14,7 +14,7 @@ class Metrics:
 
     @staticmethod
     def calculate_codebleu(reference_file, generated_file, lang='java'):
-        # CodeBLEU hesaplama için subprocess ile script çağır
+
         command = f"python CodeXGLUE/CodeBLEU/calc_code_bleu.py --refs {reference_file} --hyps {generated_file} --lang {lang}"
         result = subprocess.run(command, shell=True, capture_output=True, text=True)
         return float(result.stdout.strip()) if result.returncode == 0 else 0.0
@@ -30,20 +30,20 @@ class Metrics:
             references.append(reference_code)
             hypotheses.append(generated_code)
 
-        # BLEU hesapla
+
         bleu_scores = [
             Metrics.calculate_bleu(ref, hyp)
             for ref, hyp in zip(references, hypotheses)
         ]
         avg_bleu = np.mean(bleu_scores)
 
-        # Dosyaları oluştur
+
         with open("reference.txt", "w") as ref_file, open("generated.txt", "w") as gen_file:
             for ref, hyp in zip(references, hypotheses):
                 ref_file.write(ref + "\n")
                 gen_file.write(hyp + "\n")
 
-        # CodeBLEU hesapla
+
         avg_codebleu = Metrics.calculate_codebleu("reference.txt", "generated.txt", lang=lang)
 
         return {"BLEU": avg_bleu, "CodeBLEU": avg_codebleu}
