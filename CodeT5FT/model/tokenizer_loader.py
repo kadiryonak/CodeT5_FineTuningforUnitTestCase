@@ -5,5 +5,5 @@ class CodeT5TokenizerLoader:
         self.model_name = model_name
 
     def load_tokenizer(self):
-        print(f"Tokenizer yükleniyor: {self.model_name}")
+        print(f"Tokenizer loading: {self.model_name}")
         return RobertaTokenizer.from_pretrained(self.model_name)
